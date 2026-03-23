@@ -83,8 +83,6 @@ setOpen={setOpen}
 items={[
 {label:"Dashboard",path:"/admin"},
 {label:"Users",path:"/admin/users"},
-{label:"Vendors",path:"/admin/vendors"},
-{label:"Orders",path:"/admin/orders"},
 {label:"Analytics",path:"/admin/analytics"}
 ]}
 />

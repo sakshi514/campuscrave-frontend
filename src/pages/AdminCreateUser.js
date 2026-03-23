@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; // NEW
 import API from "../services/api";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import { motion } from "framer-motion"; // NEW
 
 function AdminCreateUser(){
 
@@ -21,12 +22,29 @@ const [year,setYear] = useState("");
 
 const [message,setMessage] = useState("");
 
-const departments = [
-"BCA",
-"BCOM",
-"BBA",
-"BCOM Marketing Management"
-];
+// ✅ NEW: users state
+const [users, setUsers] = useState([]);
+
+// ✅ NEW: fetch users
+useEffect(() => {
+  const fetchUsers = async () => {
+    try {
+      const res = await API.get("/users");
+      setUsers(res.data);
+    } catch (err) {
+      console.log("Error fetching users");
+    }
+  };
+  fetchUsers();
+}, []);
+
+// ✅ NEW: dynamic departments (same logic as AdminUsers)
+const departments = [...new Set(
+  users
+    .filter(u => u.role === "student")
+    .map(u => u.department)
+    .filter(Boolean)
+)];
 
 const generatePassword = ()=>{
 return "CC"+Math.floor(1000 + Math.random()*9000);
@@ -133,7 +151,13 @@ items={[
 />
 
 
-<div className="app-content">
+{/* ✅ NEW: Animated container */}
+<motion.div
+className="app-content"
+initial={{ opacity: 0, y: 20 }}
+animate={{ opacity: 1, y: 0 }}
+transition={{ duration: 0.4 }}
+>
 
 <div className="container" style={{background:"#f7f9fb"}}>
 
@@ -222,6 +246,7 @@ required
 
 <div style={{height:"10px"}}/>
 
+{/* ✅ FIXED DROPDOWN */}
 <select
 className="login-input"
 value={department}
@@ -238,17 +263,20 @@ required
 <option value="Other">Other</option>
 
 </select>
+
 {department === "Other" && (
-    <>
-    <div style={{height:"10px"}}/>
-    <input
-        className="login-input"
-        placeholder="Enter new department"
-        value={customDept}
-        onChange={(e)=>setCustomDept(e.target.value)}
-        required/>
-        </>
+<>
+<div style={{height:"10px"}}/>
+<input
+className="login-input"
+placeholder="Enter new department"
+value={customDept}
+onChange={(e)=>setCustomDept(e.target.value)}
+required
+/>
+</>
 )}
+
 <div style={{height:"10px"}}/>
 
 <select
@@ -309,7 +337,9 @@ Create User
 
 {message &&(
 
-<div
+<motion.div
+initial={{ opacity: 0 }}
+animate={{ opacity: 1 }}
 style={{
 marginTop:"15px",
 background:"#e8f5e9",
@@ -319,13 +349,13 @@ fontSize:"13px"
 }}
 >
 {message}
-</div>
+</motion.div>
 
 )}
 
 </div>
 
-</div>
+</motion.div>
 
 </div>
 
