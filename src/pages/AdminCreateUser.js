@@ -29,7 +29,7 @@ const [users, setUsers] = useState([]);
 useEffect(() => {
   const fetchUsers = async () => {
     try {
-      const res = await API.get("/users");
+      const res = await API.get("/admin/users");
       setUsers(res.data);
     } catch (err) {
       console.log("Error fetching users");
