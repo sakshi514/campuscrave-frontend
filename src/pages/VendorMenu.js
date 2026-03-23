@@ -28,10 +28,12 @@ function VendorMenu() {
     fetchMenu();
   }, []);
 
-  const toggleAvailability = async (itemId) => {
+  const toggleAvailability = async (item) => {
     try {
 
-      await API.put(`/items/${itemId}/toggle`);
+      await API.put(`/items/${itemId}/toggle`, {
+        available: !item.available
+      });
       fetchMenu();
 
     } catch (err) {
@@ -189,7 +191,7 @@ function VendorMenu() {
                       </button>
 
                       <button
-                        onClick={() => toggleAvailability(item._id)}
+                        onClick={() => toggleAvailability(item)}
                         style={{
                           padding: "6px 10px",
                           borderRadius: "8px",
