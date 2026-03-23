@@ -31,7 +31,7 @@ function VendorMenu() {
   const toggleAvailability = async (item) => {
     try {
 
-      await API.put(`/items/${item._Id}/toggle`, {
+      await API.put(`/items/${item._id}/toggle`, {
         available: !item.available
       });
       fetchMenu();
