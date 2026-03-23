@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://campuscrave-backend-gdrw.onrender.com",
+  baseURL: "https://campuscrave-backend-gdrw.onrender.com/api"
 });
 
 // Attach token automatically
